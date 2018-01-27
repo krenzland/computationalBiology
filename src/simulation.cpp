@@ -47,6 +47,11 @@ bool onLine(const std::vector<int> &position,
   return false;
 }
 
+int modulus(int a, int b) {
+  return (b + (a%b)) % b;
+}
+
+
 std::vector<int> samplesWithoutReplacement(int max, int size) {
   std::random_device rd;
   std::mt19937 gen(rd());
@@ -109,7 +114,6 @@ std::tuple<long, long> simulate(int avgSlidingLen, int numTargetLines) {
       curDirection = choose(directions1D, gen);
     } else {
       ++iterations3D;
-      remainingSlidingIts = 0;
       if (isSliding) {
 	// Just detached.
 	isSliding = false;
@@ -121,7 +125,8 @@ std::tuple<long, long> simulate(int avgSlidingLen, int numTargetLines) {
 
     // Adjust position.
     for (size_t i = 0; i < 3; ++i) {
-      position[i] = (position[i] + curDirection[i]) % sideLength;
+      position[i] =  modulus(position[i] + curDirection[i], sideLength);
+      assert(position[i] >= 0 && position[i] < sideLength);
     }
   }
   return std::make_tuple(iterations1D, iterations3D);
@@ -129,10 +134,9 @@ std::tuple<long, long> simulate(int avgSlidingLen, int numTargetLines) {
 }
 
 int main(void) {
-  //const std::vector<int> slidingLenGrid = {0, 5, 10, 30, 50, 100, 200, 300};
-  const std::vector<int> slidingLenGrid = {5, 10, 30, 50, 100, 200, 300};
-  //const std::vector<int> numLinesGrid = {1, 10, 30, 100};
-  const std::vector<int> numLinesGrid = {10, 30, 100};
+  const std::vector<int> slidingLenGrid = {0, 5, 10, 30, 50, 100, 200, 300};
+  const std::vector<int> numLinesGrid = {1, 10, 30, 100}; // exclueded 1 here!
+  //const std::vector<int> numLinesGrid = {10, 30, 100};
   const int numIt = 1024;
   
   auto results = std::vector<std::vector<long>>(slidingLenGrid.size() * numLinesGrid.size() * numIt);
