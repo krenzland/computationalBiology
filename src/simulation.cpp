@@ -133,7 +133,7 @@ int main(void) {
   const std::vector<int> slidingLenGrid = {5, 10, 30, 50, 100, 200, 300};
   //const std::vector<int> numLinesGrid = {1, 10, 30, 100};
   const std::vector<int> numLinesGrid = {10, 30, 100};
-  const int numIt = 1000;
+  const int numIt = 1024;
   
   auto results = std::vector<std::vector<long>>(slidingLenGrid.size() * numLinesGrid.size() * numIt);
 
@@ -143,7 +143,7 @@ int main(void) {
     for (auto numLines : numLinesGrid) {
       std::cout << "Benchmarking avgSlidingLen = " << avgSlidingLen << ", numLines " << numLines << std::endl;
       // We parallelize here for better load-balancing.
-      #pragma omp parallel for
+#pragma omp parallel for schedule(dynamic, 1)
       for (size_t i = 0; i < numIt; ++i) {
 	long iterations1D, iterations3D;
 	std::tie(iterations1D, iterations3D) = simulate(avgSlidingLen, numLines);
