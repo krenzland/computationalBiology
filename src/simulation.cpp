@@ -163,9 +163,9 @@ std::tuple<long, long> simulate(int avgSlidingLen, int numTargetLines) {
 }
 
 int main(void) {
-  const std::vector<int> slidingLenGrid = {0, 5, 10, 30, 50, 100, 200, 300};
-  const std::vector<int> numLinesGrid = {1, 10, 30, 100};
-  const int numIt = 1024;
+  const std::vector<int> slidingLenGrid = {0, 5, 10, 30, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300};
+  const std::vector<int> numLinesGrid = {1, 10, 30, 50, 70, 100};
+  const int numIt = 2 * 1024;
   
   auto results = std::vector<std::vector<long>>(slidingLenGrid.size() * numLinesGrid.size() * numIt);
 
